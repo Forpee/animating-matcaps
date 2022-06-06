@@ -97,7 +97,7 @@ void main()
     float diff=abs(dot(vNormal,normalize(vec3(1.,1.,0.))))+abs(dot(vNormal,normalize(vec3(1.,-1.,0.))));
     diff*=.5;
     
-    float nosie=.5*(cnoise(vPosition*10.)+1.);
+    float nosie=.5*(cnoise(vPosition*10.)+1.)+progress;
     
     float step=smoothstep(.1,.09,noise)
 }

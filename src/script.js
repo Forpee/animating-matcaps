@@ -14,6 +14,14 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 // Debug
 const gui = new dat.GUI();
 
+let params = {
+    progress: 0
+};
+
+gui.add(params, 'progress', 0, 1).step(0.01).onChange(() => {
+    material.uniforms.progress.value = params.progress;
+});
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
 
@@ -31,6 +39,7 @@ const material = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
         uTexture: { value: new THREE.TextureLoader().load('/matcap.png') },
+        progress: { value: 0 }
     },
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
