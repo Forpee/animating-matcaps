@@ -1,4 +1,5 @@
 uniform float uTime;
+uniform float progress;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
@@ -90,14 +91,19 @@ void main()
     vec3 x=normalize(vec3(viewDir.z,0.,-viewDir.x));
     vec3 y=cross(viewDir,x);
     
-    vec2 uv=vec2(dot(x,vNormal),dot(y,vNormal))*.5+.5;
+    vec2 uv=vec2(dot(x,vNormal),dot(y,vNormal))*.495+.5;
     vec4 color=texture2D(uTexture,uv);
     gl_FragColor=color;
     
     float diff=abs(dot(vNormal,normalize(vec3(1.,1.,0.))))+abs(dot(vNormal,normalize(vec3(1.,-1.,0.))));
     diff*=.5;
     
-    float nosie=.5*(cnoise(vPosition*10.)+1.)+progress;
+    float noise=.5*(cnoise(vPosition*10.)+1.)+progress-vPosition.z;
     
-    float step=smoothstep(.1,.09,noise)
+    float step=smoothstep(.1,.09,noise);
+    
+    vec4 final=mix(vec4(diff,diff,diff,1.),color,step);
+    gl_FragColor=final;
+    // gl_FragColor=vec4(step,step,step,1.);
+    // gl_FragColor=vec4(noise,noise,noise,1.);
 }
