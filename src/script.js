@@ -38,7 +38,33 @@ const material = new THREE.ShaderMaterial({
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+// scene.add(mesh);
+
+// Loaders
+const gltfLoader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'); // use a full url path
+gltfLoader.setDRACOLoader(dracoLoader);
+
+gltfLoader.load('/modelDraco.gltf', (gltf) => {
+    // dnaGeo = gltf.scene.children[0].geometry;
+    // dnaGeo.center();
+    // mesh = new THREE.Points(dnaGeo, material);
+    // scene.add(mesh);
+    console.log(gltf);
+    const mesh = gltf.scene.children[0];
+    // traverse to find mesh 
+    mesh.traverse(function (child) {
+        if (child.isMesh) {
+            child.material = material;
+        }
+    });
+    mesh.scale.set(0.025, 0.025, 0.025);
+    mesh.position.set(0, 0, 0);
+    mesh.rotation.x = Math.PI / 2;
+    scene.add(mesh);
+
+});
 
 /**
  * Sizes
