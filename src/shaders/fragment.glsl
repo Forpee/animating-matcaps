@@ -86,6 +86,11 @@ float cnoise(vec3 P){
 
 void main()
 {
+    vec3 a=vec3(.5,.5,.5);
+    vec3 b=vec3(.5,.5,.5);
+    vec3 c=vec3(2.,1.,.5);
+    vec3 d=vec3(.5,.2,.25);
+    
     vec3 viewDir=normalize(vView);
     
     vec3 x=normalize(vec3(viewDir.z,0.,-viewDir.x));
@@ -95,15 +100,18 @@ void main()
     vec4 color=texture2D(uTexture,uv);
     gl_FragColor=color;
     
-    float diff=abs(dot(vNormal,normalize(vec3(1.,1.,0.))))+abs(dot(vNormal,normalize(vec3(1.,-1.,0.))));
-    diff*=.5;
+    float diff=abs(dot(vNormal,normalize(vec3(1.,1.,0.))));
+    // diff*=.5;
     
     float noise=.5*(cnoise(vPosition*10.)+1.)+progress-vPosition.z;
     
     float step=smoothstep(.1,.09,noise);
+    float pi=3.14159265;
+    vec3 animatedColor=a+b*cos(2.*pi*(c*diff*4.+d+uTime*.8));
     
-    vec4 final=mix(vec4(diff,diff,diff,1.),color,step);
+    vec4 final=mix(color,vec4(animatedColor,1.),step);
     gl_FragColor=final;
+    // gl_FragColor=vec4(animatedColor,1.);
     // gl_FragColor=vec4(step,step,step,1.);
     // gl_FragColor=vec4(noise,noise,noise,1.);
 }

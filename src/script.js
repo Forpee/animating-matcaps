@@ -18,7 +18,7 @@ let params = {
     progress: 0
 };
 
-gui.add(params, 'progress', 0, 1).step(0.01).onChange(() => {
+gui.add(params, 'progress', -30, 30).step(0.01).onChange(() => {
     material.uniforms.progress.value = params.progress;
 });
 
@@ -49,8 +49,9 @@ const material = new THREE.ShaderMaterial({
 // Mesh
 const mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
     color: 0xffffff,
+    transparent: true,
 }));
-scene.add(mesh);
+// scene.add(mesh);
 mesh.position.z = 0.4;
 
 // Loaders
