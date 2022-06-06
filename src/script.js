@@ -24,12 +24,13 @@ const scene = new THREE.Scene();
  * Test mesh
  */
 // Geometry
-const geometry = new THREE.PlaneBufferGeometry(1, 1, 32, 32);
+const geometry = new THREE.PlaneBufferGeometry(5, 5, 32, 32);
 
 // Material
 const material = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
+        uTexture: { value: new THREE.TextureLoader().load('/matcap.png') },
     },
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
@@ -37,8 +38,11 @@ const material = new THREE.ShaderMaterial({
 });
 
 // Mesh
-const mesh = new THREE.Mesh(geometry, material);
-// scene.add(mesh);
+const mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+}));
+scene.add(mesh);
+mesh.position.z = 0.4;
 
 // Loaders
 const gltfLoader = new GLTFLoader();
@@ -73,6 +77,21 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 };
+window.addEventListener('mousedown', () => {
+    gsap.to(mesh.position, {
+        duration: 1,
+        z: 0.0,
+        ease: 'power4.out'
+    });
+});
+
+window.addEventListener('mouseup', () => {
+    gsap.to(mesh.position, {
+        duration: 1,
+        z: 0.4,
+        ease: 'power4.out'
+    });
+});
 
 window.addEventListener('resize', () => {
     // Update sizes
